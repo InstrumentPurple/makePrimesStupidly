@@ -34,7 +34,7 @@ func main(){
 				}
 			}
 					
-			if isPrime && !isDivisible(float64(c),2.0){ // loop only does odd primes
+			if isPrime{
 				fmt.Println(c)
 				f.Write([]byte(strconv.Itoa(c) + "\n"))
 			}
