@@ -64,7 +64,7 @@ func main(){
 	for i := 0; i < THREADS; i += 1{
 		go testOne(&wg, f, &mu, cha[i])
 	}
-	wg.Add(16)
+	wg.Add(THREADS)
 
 
 	i := 0
