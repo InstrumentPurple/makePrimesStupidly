@@ -20,13 +20,9 @@ func isDivisible(a,b float64)bool{
 	return g == float64(int64(g))
 }
 
-func testOne(f *os.File, mu *sync.Mutex, ch chan int){
+func testOne(wg *sync.WaitGroup, f *os.File, mu *sync.Mutex, ch chan int){
 	for i_ := range ch{
 		c := i_
-		if c == 0 {
-			close(ch)
-			return
-		}
 		isPrime := true
 		for i := c; i > 3 && isPrime; i -= 2{
 			if(i==c) {
@@ -48,6 +44,7 @@ func testOne(f *os.File, mu *sync.Mutex, ch chan int){
 		}
 
 	}
+	wg.Done()
 }
 
 
@@ -63,10 +60,11 @@ func main(){
 	}
 
 	var mu sync.Mutex
+	var wg sync.WaitGroup
 	for i := 0; i < THREADS; i += 1{
-		go testOne(f, &mu, cha[i])
+		go testOne(&wg, f, &mu, cha[i])
 	}
-
+	wg.Add(16)
 
 
 	i := 0
@@ -79,6 +77,7 @@ func main(){
 
 	//destruct
 	for _,c := range cha{
-		c <- 0
+		close(c)
 	}
+	wg.Wait()
 }
