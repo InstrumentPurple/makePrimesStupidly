@@ -1,5 +1,5 @@
 /* creeated Jan 1, 2025
- * made paralel June 24,2026 */
+ * made parallel June 24,2026 */
 package main
 
 import("fmt"
@@ -28,7 +28,6 @@ func testOne(wg *sync.WaitGroup, f *os.File, mu *sync.Mutex, ch chan int){
 			if(i==c) {
 				continue;
 			} else {
-
 				isPrime = !isDivisible(float64(c),float64(i))
 				if !isPrime{
 					break;
@@ -61,10 +60,12 @@ func main(){
 
 	var mu sync.Mutex
 	var wg sync.WaitGroup
+	wg.Add(THREADS)
+	
 	for i := 0; i < THREADS; i += 1{
 		go testOne(&wg, f, &mu, cha[i])
 	}
-	wg.Add(THREADS)
+	
 
 
 	i := 0
